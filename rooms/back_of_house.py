@@ -1,7 +1,9 @@
 from adventurelib import *
+from detail_room import *
+
 from rooms.kitchen import *
 
-back_of_house = Room("""
+back_of_house = Detail_Room("""
 You do a quick circle around the house. Just as you reach what looks like an open back
 door, your phone gives a shrill ring – just one, before cutting out again. You must have
 gotten a bar of reception for a second there! You look at the screen: Bill the historian. He
@@ -16,5 +18,4 @@ You can enter the house through the back door to the north.
 
 back_of_house.name = 'back_of_house'
 back_of_house.title = "Back of the House"
-back_of_house.items = Bag()
 back_of_house.north = kitchen

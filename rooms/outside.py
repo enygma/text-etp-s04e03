@@ -1,7 +1,9 @@
 from adventurelib import *
+from detail_room import *
+
 from rooms.back_of_house import *
 
-outside = Room("""
+outside = Detail_Room("""
 “Hi, this is Bill. We spoke earlier – Bill, from Culloden Manor? Listen, I’ve been calling you
 because a few things have been going awry at the house tonight, and before we go in I’ll
 need to explain them to you. It’s too much to get into over the phone, but trust me, you’ll want
@@ -21,5 +23,4 @@ To the east you can continue around to the back of the house.
 
 outside.name = 'outside'
 outside.title = "Outside the House"
-outside.items = Bag()
 outside.east = back_of_house
