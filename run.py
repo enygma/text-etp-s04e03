@@ -80,8 +80,17 @@ def take(item):
             print(f"You don't seem to be able to take that.")
             current_room.items.add(obj)
         else:
-            print(f"You take the {obj}.")
-            inventory.add(obj)
+            if obj.take:
+                result = obj.take()
+                if result:
+                    print(f"You take the {obj}.")
+                    inventory.add(obj)
+                else:
+                    print(f"You don't seem to be able to take that.")
+                    current_room.items.add(obj)
+            else:
+                print(f"You take the {obj}.")
+                inventory.add(obj)
 
 @when('drop ITEM')
 def drop(item):
@@ -90,6 +99,7 @@ def drop(item):
             if item in i.aliases:
                 obj = inventory.take(item)
                 current_room.items.add(obj)
+                print("You have dropped {}".format(item))
     else:
         print("You don't have {item}")
 
