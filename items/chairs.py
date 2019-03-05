@@ -6,13 +6,13 @@ chairs = Detail_Item('a few chairs', 'chairs')
 chairs.takeable = False
 chairs.description = """
 They're four standard chairs, all tucked in neatly where players would sit at the table."""
+chairs.actions.append('arrange chairs')
 
 def action_arrage():
     print('arrange the chairs')
     return True
 
 def load_actions():
-    print('loading chairs')
     adventurelib._register('arrange chairs', action_arrage)
 
     return False
