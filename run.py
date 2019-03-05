@@ -34,7 +34,16 @@ def load_save():
 
 def set_current_room(room):
     global current_room
+
+    # Load custom actions
+    for item in current_room.items:
+        item.unload_actions()
+
     current_room = room
+
+    # Load custom actions
+    for item in current_room.items:
+        item.load_actions()
 
 ## Commands
 @when('look')
@@ -59,8 +68,18 @@ def look():
 
 @when('look at ITEM')
 def look_item(item):
-    i = globals()[item]
-    print(i.description)
+    item = item.replace(' ', '_')
+    if item in globals():
+        i = globals()[item]
+        print(i.description+"\n")
+
+        if len(i.actions) > 0:
+            print('You can also...')
+            for action in i.actions:
+                print('* '+action)
+
+    else:
+        print(f"I don't see that here.")
 
 @when('take ITEM')
 def take(item):
@@ -141,10 +160,10 @@ def go(direction):
     else:
         print("You can't go that way.")
 
-## @todo implement restart command to remove the save file
 
 ## Boot the game
 current_room = outside
+set_current_room(outside)
 load_save()
 
 save_progress(current_room, inventory)
