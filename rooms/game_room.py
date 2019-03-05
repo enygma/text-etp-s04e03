@@ -4,6 +4,11 @@ from detail_item import *
 
 from items.clock import *
 from items.rifle import *
+from items.rug import *
+from items.painting import *
+from items.card_table import *
+from items.chairs import *
+from items.doors import *
 
 game_room = Detail_Room("""
 The first thing that enters your head is that this is like an old-fashioned man cave. It's a
@@ -21,12 +26,13 @@ fire is a single chair with a small side table next to it.
 game_room.name = 'game_room'
 game_room.title = "The Game Room"
 
-painting = Detail_Item('a large painting', 'painting')
-card_table = Detail_Item('a card table', 'card_table')
-chairs = Detail_Item('a few chairs', 'chairs')
+# painting = Detail_Item('a large painting', 'painting')
+# card_table = Detail_Item('a card table', 'card_table')
+# chairs = Detail_Item('a few chairs', 'chairs')
 # clock = Item('a clock', 'clock')
+# doors = Detail_Item('two doors', 'doors')
+
 curtains = Detail_Item('curtains', 'curtains')
-doors = Detail_Item('two doors', 'doors')
 fireplace = Detail_Item('a fireplace', 'fireplace')
 logbook = Detail_Item('a logbook', 'logbook')
 animals = Detail_Item('several mounted animals', 'animals')
@@ -35,7 +41,7 @@ pipe_case = Detail_Item('a pipe case', 'pipe_case')
 game_room.items = Bag([
     rifle, painting, card_table, chairs, clock,
     curtains, doors, fireplace, logbook, animals,
-    pipe_case
+    pipe_case, rug
 ])
 
 
