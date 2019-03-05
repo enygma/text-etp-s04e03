@@ -3,6 +3,8 @@
 
 This game makes use of the [Adventurelib](https://adventurelib.readthedocs.io/en/stable/) Python library.
 
+Source: [PDF](https://drive.google.com/file/d/1flH5tXNHh-ks1RYCTHMwxx8EgXRroGiM/view)
+
 Link: [Escape This Podcast (S04E03)](http://www.escapethispodcast.com/e/descent-of-the-cullodens-chapter-3-id-kill-you-if-i-had-my-gun-ft-triple-jeopardy-lee-amy-and-alistair/)
 
 
