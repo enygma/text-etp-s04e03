@@ -1,9 +1,12 @@
 from adventurelib import *
 from detail_room import *
 
-from rooms.back_of_house import *
+import room_list
 
-outside = Detail_Room("""
+class Outside_Room(Detail_Room):
+
+    def __init__(self):
+        description = """
 “Hi, this is Bill. We spoke earlier – Bill, from Culloden Manor? Listen, I’ve been calling you
 because a few things have been going awry at the house tonight, and before we go in I’ll
 need to explain them to you. It’s too much to get into over the phone, but trust me, you’ll want
@@ -19,8 +22,13 @@ place so old; the haunted house tours must make good money. You wonder if you'd 
 allowed to move in if you got some share of the ownership.
 
 To the east you can continue around to the back of the house.
-""")
+"""
 
-outside.name = 'outside'
-outside.title = "Outside the House"
-outside.east = back_of_house
+        Detail_Room.__init__(self, description)
+
+        self.title = 'Outside the House'
+        self.name = 'outside'
+
+        # Links to other rooms
+        # import rooms.back_of_house
+        self.east = room_list.kitchen
