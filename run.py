@@ -63,14 +63,16 @@ def load_item_actions(item):
     return True
 
 def unload_item_actions(item):
-    print('unloading')
     actions = item.actions
-    print(commands)
-    if len(actions) > 0:
-        for action in actions:
-            print(action)
+    matches = []
 
-    # print(actions)
+    for a in actions:
+        matches.append(a['match'])
+
+    for command in list(commands):
+        if command[0].orig_pattern in matches:
+            commands.remove(command)
+
     return True
 
 ## Commands
