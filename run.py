@@ -1,18 +1,20 @@
 from adventurelib import *
+from adventurelib import _register
+from adventurelib import commands
+
 import os
 from colored import fg, bg, attr
 import json
 import sys
 
-## Import the initial room
-from rooms.outside import *
+import room_list
 
 # Print welcome banner
 f = open('./welcome.md', 'r')
 print(f.read())
 
 inventory = Bag()
-default_room = outside
+default_room = None
 
 def save_progress(current_room, inventory):
     data = {
@@ -29,21 +31,47 @@ def load_save():
 
         f = open('./save.json', 'r')
         contents = json.loads(f.read())
-        exec('set_current_room('+contents['current_room']+')')
+        exec('set_current_room(room_list.'+contents['current_room']+')')
     return True
 
 def set_current_room(room):
     global current_room
 
-    # Load custom actions
+    if isinstance(room, str):
+        print('is string')
+        room = globals()[room]
+        room = room()
+
+    # Unload custom actions on items
     for item in current_room.items:
-        item.unload_actions()
+        unload_item_actions(item)
 
     current_room = room
 
     # Load custom actions
     for item in current_room.items:
-        item.load_actions()
+        # item.load_actions()
+        load_item_actions(item)
+
+def load_item_actions(item):
+    actions = item.actions
+    if len(actions) > 0:
+        for action in actions:
+            func = getattr(item, action['method'])
+            _register(action['match'], func)
+
+    return True
+
+def unload_item_actions(item):
+    print('unloading')
+    actions = item.actions
+    print(commands)
+    if len(actions) > 0:
+        for action in actions:
+            print(action)
+
+    # print(actions)
+    return True
 
 ## Commands
 @when('look')
@@ -69,14 +97,14 @@ def look():
 @when('look at ITEM')
 def look_item(item):
     item = item.replace(' ', '_')
-    if item in globals():
-        i = globals()[item]
+    if item in current_room.items:
+        i = current_room.items.find(item)
         print(i.description+"\n")
 
         if len(i.actions) > 0:
             print('You can also...')
             for action in i.actions:
-                print('* '+action)
+                print('* '+action['match'])
 
     else:
         print(f"I don't see that here.")
@@ -122,6 +150,19 @@ def drop(item):
     else:
         print("You don't have {item}")
 
+@when('open ITEM')
+def open_item(item):
+    if item in globals():
+        i = globals()[item]
+        try:
+            i.open_item()
+        except AttributeError:
+            print("You can't open that!")
+    else:
+        print("You can't find that to open it.")
+
+    return
+
 @when('inventory')
 def show_inventory():
     print("You have:")
@@ -145,10 +186,6 @@ def reset():
 @when('south', direction='south')
 @when('east', direction='east')
 @when('west', direction='west')
-# @when('n', direction='north')
-# @when('s', direction='south')
-# @when('e', direction='east')
-# @when('w', direction='west')
 def go(direction):
     global current_room
     room = current_room.exit(direction)
@@ -162,8 +199,8 @@ def go(direction):
 
 
 ## Boot the game
-current_room = outside
-set_current_room(outside)
+current_room = room_list.outside
+set_current_room(room_list.outside)
 load_save()
 
 save_progress(current_room, inventory)
