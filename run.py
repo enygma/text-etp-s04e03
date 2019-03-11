@@ -8,12 +8,12 @@ import json
 import sys
 
 import room_list
+import inventory
 
 # Print welcome banner
 f = open('./welcome.md', 'r')
 print(f.read())
 
-inventory = Bag()
 default_room = None
 
 def save_progress(current_room, inventory):
@@ -101,15 +101,22 @@ def look_item(item):
     item = item.replace(' ', '_')
     if item in current_room.items:
         i = current_room.items.find(item)
-        print(i.description+"\n")
-
-        if len(i.actions) > 0:
-            print('You can also...')
-            for action in i.actions:
-                print('* '+action['match'])
-
+    elif item in inventory.inv:
+        i = inventory.inv.find(item)
     else:
         print(f"I don't see that here.")
+        return False
+
+    print(i.description+"\n")
+
+    # Run our look handler if it exists
+    if "look" in dir(i):
+        i.look()
+
+    if len(i.actions) > 0:
+        print('You can also...')
+        for action in i.actions:
+            print('* '+action['match'])
 
 @when('take ITEM')
 def take(item):
@@ -124,29 +131,29 @@ def take(item):
                 obj = current_room.items.take(item)
 
         if not obj:
-            print(f"You can't find {item}.")
+            print("You can't find {}.".format(item))
         elif obj and not obj.takeable:
             print(f"You don't seem to be able to take that.")
             current_room.items.add(obj)
         else:
-            if obj.take:
+            if "take" in dir(obj):
                 result = obj.take()
                 if result:
                     print(f"You take the {obj}.")
-                    inventory.add(obj)
+                    inventory.inv.add(obj)
                 else:
                     print(f"You don't seem to be able to take that.")
                     current_room.items.add(obj)
             else:
                 print(f"You take the {obj}.")
-                inventory.add(obj)
+                inventory.inv.add(obj)
 
 @when('drop ITEM')
 def drop(item):
-    if item in inventory:
-        for i in list(inventory):
+    if item in inventory.inv:
+        for i in list(inventory.inv):
             if item in i.aliases:
-                obj = inventory.take(item)
+                obj = inventory.inv.take(item)
                 current_room.items.add(obj)
                 print("You have dropped {}".format(item))
     else:
@@ -154,25 +161,29 @@ def drop(item):
 
 @when('open ITEM')
 def open_item(item):
-    if item in globals():
-        i = globals()[item]
-        try:
-            i.open_item()
-        except AttributeError:
-            print("You can't open that!")
+    if current_room.items.find(item) == None:
+        print(f"You don't see {item} here.")
     else:
-        print("You can't find that to open it.")
+        obj = current_room.items.find(item)
+        can_open = False
+        if "open" in dir(obj):
+            can_open = obj.open()
+
+        if can_open:
+            return True
+        else:
+            print("You can't open that.")
 
     return
 
 @when('inventory')
 def show_inventory():
     print("You have:")
-    if not inventory:
+    if not inventory.inv:
         print('nothing')
         return
     
-    for item in inventory:
+    for item in inventory.inv:
         print(f"* {item}")
 
 @when('reset')
@@ -190,11 +201,23 @@ def reset():
 @when('west', direction='west')
 def go(direction):
     global current_room
+    
     room = current_room.exit(direction)
-    if room:
-        set_current_room(room)
+
+    can_exit = True
+    # See if we can exit
+    if "exit" in dir(room):
+        can_exit = room.exit(direction)
+
+    if room and can_exit:
         print(f"%s%s%s>> You go {direction}  > %s" % (fg('white'), bg(56), attr('bold'), attr('reset')))
-        save_progress(current_room, inventory)
+
+        # See if we need to take any "enter" actions
+        if "enter" in dir(room):
+            room.enter()
+
+        set_current_room(room)
+        save_progress(current_room, inventory.inv)
         look()
     else:
         print("You can't go that way.")
@@ -205,7 +228,7 @@ current_room = room_list.outside
 set_current_room(room_list.outside)
 load_save()
 
-save_progress(current_room, inventory)
+save_progress(current_room, inventory.inv)
 look()
 
 try:
