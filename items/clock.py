@@ -1,8 +1,12 @@
 from detail_item import *
 
-clock = Detail_Item('a clock', 'clock')
-clock.takeable = False
-clock.description = """
+class Clock(Detail_Item):
+
+    def __init__(self, name, aliases):
+        Detail_Item.__init__(self, name, aliases)
+        
+        self.takeable = False
+        self.description = """
 It isn't a grandfather clock, but it isn't much smaller than one. It's working, and is
 at least close to the correct time, but it may have slowed down over the years. Unlike most
 old clocks you know, this one has three hands rather than just two: an hour hand, a

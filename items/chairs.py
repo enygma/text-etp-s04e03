@@ -1,31 +1,29 @@
 from detail_item import *
-from colored import fg, bg, attr
-import adventurelib
+import room_list
 
-chairs = Detail_Item('a few chairs', 'chairs')
-chairs.takeable = False
-chairs.description = """
-They're four standard chairs, all tucked in neatly where players would sit at the table."""
-chairs.actions.append('arrange chairs')
+from items.key import Key
 
-def action_arrage():
-    print('arrange the chairs')
-    return True
+class Chairs(Detail_Item):
 
-def load_actions():
-    adventurelib._register('arrange chairs', action_arrage)
+    def __init__(self, name, aliases):
+        Detail_Item.__init__(self, name, aliases)
 
-    return False
+        self.arranged = False
+        self.description = "They're four standard chairs, all tucked in neatly where players would sit at the table."
 
-def unload_actions():
-    for command in list(adventurelib.commands):
-        
-        # Unload our "arrange chairs" action
-        if command[0].orig_pattern == 'arrange chairs':
-            print('>> deleting')
-            adventurelib.commands.remove(command)
-    
-    return False
+    def action_arrange(self):
+        if not self.arranged:
+            print("""
+You start swivelling the appropriate chairs around and getting them into place. Funnily enough, when you turn
+the first one, you swear you can see tiny grooves along the edge of the table where the back of the chair could 
+touch it. And when you go around to the chair that needs tilting, there's a definite dent on the upper part of 
+the table edge. You push the chair onto its back legs, and it falls right into the dent. 
 
-chairs.load_actions = load_actions
-chairs.unload_actions = unload_actions
+And when it does, you hear a small thump come from under the table. You look down, and sitting on the carpet, 
+having fallen from a hidden compartment on the table's underside, is a tiny key.""")
+            self.arranged = True
+
+            key = Key('a small key', 'key')
+            room_list.game_room.items.add(key)
+        else:
+            print('Rearranging the chairs has no additonal effect.')
