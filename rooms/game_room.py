@@ -2,21 +2,25 @@ from adventurelib import *
 from detail_room import *
 from detail_item import *
 
-from items.clock import *
-from items.rifle import *
-from items.rug import *
-from items.painting import *
-from items.card_table import *
-from items.chairs import *
-from items.doors import *
+from colored import fg, bg, attr
 
-from items.test import Test_Item
+from items.chairs import Chairs
+from items.card_table import Card_Table
+from items.clock import Clock
+from items.rifle import Rifle
+from items.painting import Painting
+from items.rug import Rug
+from items.doors import Doors
+from items.fireplace import Fireplace
+from items.logbook import Logbook
+from items.pipe_case import PipeCase
+from items.animals import Animals
+from items.curtains import Curtains
+from items.trophies import Trophies
+from items.chair import Chair
 
-curtains = Detail_Item('curtains', 'curtains')
-fireplace = Detail_Item('a fireplace', 'fireplace')
-logbook = Detail_Item('a logbook', 'logbook')
-animals = Detail_Item('several mounted animals', 'animals')
-pipe_case = Detail_Item('a pipe case', 'pipe_case')
+from items.safe import Safe
+from items.side_table import SideTable
 
 class GameRoom_Room(Detail_Room):
 
@@ -38,36 +42,39 @@ fire is a single chair with a small side table next to it."""
         self.title = 'The Game Room'
         self.name = 'game_room'
 
-        test = Test_Item('a test', 'test')
-        # print(test.actions)
+        chairs = Chairs('a few chairs', 'chairs')
+        card_table = Card_Table('a card table', 'card_table')
+        clock = Clock('a clock', 'clock')
+        rifle = Rifle('an old rifle', 'rifle')
+        painting = Painting('a large painting', 'painting')
+        self.doors = Doors('large ornate doors', 'doors')
+        rug = Rug('a large rug', 'rug')
+        fireplace = Fireplace('a fireplace', 'fireplace')
+        # logbook = Logbook('a logbook', 'logbook')
+        # pipe_case = PipeCase('a pipe case', 'pipe_case')
+        animals = Animals('mounted animals', 'animals')
+        curtains = Curtains('curtains', 'curtains')
+        side_table = SideTable('a side table', 'side_table')
+        trophies = Trophies('trophies', 'trophies')
+        chair = Chair('a chair', 'chair')
+        safe = Safe('a safe', 'safe')
 
         self.items = Bag([
-            rifle, painting, card_table, chairs, clock,
-            curtains, doors, fireplace, logbook, animals,
-            pipe_case, rug,
-            test
+            rifle, painting, card_table, clock,
+            curtains, self.doors, fireplace, animals,
+            rug, side_table, safe,
+            chairs, trophies, chair
         ])
 
-        # Links to other rooms
-        # import rooms.kitchen
-        # self.west = rooms.kitchen.Kitchen_Room()
+    def enter(self):
+        self.doors.locked = True
+        print("""
+        %s%sAfter entering the room, the doors swing closed behind you and lock!%s""" % (fg('white'), attr('bold'), attr('reset')))
 
-# painting = Detail_Item('a large painting', 'painting')
-# card_table = Detail_Item('a card table', 'card_table')
-# chairs = Detail_Item('a few chairs', 'chairs')
-# clock = Item('a clock', 'clock')
-# doors = Detail_Item('two doors', 'doors')
-
-# curtains = Detail_Item('curtains', 'curtains')
-# fireplace = Detail_Item('a fireplace', 'fireplace')
-# logbook = Detail_Item('a logbook', 'logbook')
-# animals = Detail_Item('several mounted animals', 'animals')
-# pipe_case = Detail_Item('a pipe case', 'pipe_case')
-
-# game_room.items = Bag([
-#     rifle, painting, card_table, chairs, clock,
-#     curtains, doors, fireplace, logbook, animals,
-#     pipe_case, rug
-# ])
-
-
+    def exit(self, direction):
+        if (direction == 'west' and self.doors.locked == True):
+            print("%s%sThe doors are locked tight! You can't get out!%s" % (fg('white'), attr('bold'), attr('reset')))
+            return False
+        else:
+            print('The doors are unlocked and you can exit the room freely')
+            return True
