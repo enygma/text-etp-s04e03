@@ -5,8 +5,8 @@ import room_list
 
 class PipeCase(Detail_Item):
 
-    def __init__(self, name, aliases):
-        Detail_Item.__init__(self, name, aliases)
+    def __init__(self, name, *aliases):
+        Detail_Item.__init__(self, name, *aliases)
         
         self.takeable = True
         self.locked = True

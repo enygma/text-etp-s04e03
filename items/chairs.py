@@ -1,5 +1,6 @@
 from detail_item import *
 import room_list
+import formatting
 
 from items.key import Key
 
@@ -20,7 +21,7 @@ touch it. And when you go around to the chair that needs tilting, there's a defi
 the table edge. You push the chair onto its back legs, and it falls right into the dent. 
 
 And when it does, you hear a small thump come from under the table. You look down, and sitting on the carpet, 
-having fallen from a hidden compartment on the table's underside, is a tiny key.""")
+having fallen from a hidden compartment on the table's underside, is a tiny %s%skey%s.""" % formatting.highlight)
             self.arranged = True
 
             key = Key('a small key', 'key')
