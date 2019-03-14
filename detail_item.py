@@ -8,10 +8,13 @@ class Detail_Item(Item):
 
     actions = []
     
-    def __init__(self, name, *aliases, takeable=True):
+    def __init__(self, *args, **kwargs):
         self.actions = []
-        self.takeable = takeable
-        Item.__init__(self, name, *aliases)
+        if "takeable" in kwargs:
+            self.takeable = takeable
+
+        name = args[0]
+        Item.__init__(self, name, *args)
 
 
     def load_actions(self):
