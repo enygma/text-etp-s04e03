@@ -1,6 +1,7 @@
 from detail_item import *
 from items.white_powder import WhitePowder
 import room_list
+import formatting
 
 class Fireplace(Detail_Item):
 
@@ -10,8 +11,8 @@ class Fireplace(Detail_Item):
         self.takeable = False
         self.description = """
 The fire is unlit and the area around it cold. You don't think it's been lit in
-many, many years. It still has some ancient sooty powder on the bottom, some of which is
-black, but most of which has aged so much it's turned grey or even white."""
+many, many years. It still has some ancient sooty %s%spowder%s on the bottom, some of which is
+black, but most of which has aged so much it's turned grey or even white.""" % formatting.highlight
 
     def look(self):
         powder = WhitePowder('white powder', 'powder')

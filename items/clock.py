@@ -25,7 +25,7 @@ as narrow as a coat hanger wire."""
 
     def action_settime(self, time):
         # Make sure they have the pipe and the traps
-        if "pipe" in inventory.inv: and "traps" in inventory.inv:
+        if "pipe" in inventory.inv and "traps" in inventory.inv:
             if time == self.match_time:
                 print("""Inserting the thin pipe into the holes on the back of the clock, you 
 spin the hands one by one until they match the noises made by the traps – until you reach 

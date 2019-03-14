@@ -28,8 +28,8 @@ message. H... A... N...G."""
 
     def action_unlock(self, code):
         if code == self.unlock_code:
-            print("""The door to the safe swings open! From inside it you pull out three objects: three traps.
-They look like bear traps. Lucky for you they're all shut safely at the moment.""")
+            print("""The door to the safe swings open! From inside it you pull out three objects: three %s%straps%s.
+They look like bear traps. Lucky for you they're all shut safely at the moment.""" % formatting.highlight)
 
             traps = Traps('bear traps', 'traps')
             room_list.game_room.items.add(traps)

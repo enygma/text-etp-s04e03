@@ -55,7 +55,7 @@ the same 3D wooden pattern as everywhere else on the door.
             print("""
 You press a hand up to the wooden patterning and, well, shake it. And it  comes loose! A small 
 piece of the wood drops off in your hand, and sitting behind it is a very small, very fine 
-brush. Like a make-up brush – or a police fingerprinting brush.""")
+%s%sbrush%s. Like a make-up brush – or a police fingerprinting brush.""" % formatting.highlight)
 
             brush = Brush('a small brush', 'brush')
             room_list.game_room.items.add(brush)
