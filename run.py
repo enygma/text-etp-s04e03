@@ -85,7 +85,7 @@ def look():
     # Output the items
     if current_room.items:
         item_names = ', '.join(str(x) for x in current_room.items)
-        print(f'There is {item_names} here.')
+        print(f'You see {item_names}.')
 
     # display the exits
     if current_room.exits():
