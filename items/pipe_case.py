@@ -1,6 +1,7 @@
 from detail_item import *
 from inventory import inv
 from items.pipe import Pipe
+import formatting
 import room_list
 
 class PipeCase(Detail_Item):
@@ -24,8 +25,8 @@ to unlock it."""
         if self.locked:
             # see if they have the key in their inventory
             if "key" in inv:
-                print("It unlocks! And... there is a pipe inside. It's long and incredibly thin. "
-                    +"Looks like it's made of ivory or something.")
+                print("It unlocks! And... there is a %s%spipe%s inside. It's long and incredibly thin. "
+                    +"Looks like it's made of ivory or something." % formatting.highlight)
 
                 # Add the pipe to the room
                 pipe = Pipe('pipe', 'pipe')
