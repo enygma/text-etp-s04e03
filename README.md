@@ -21,3 +21,12 @@ You can also run in debug mode to get actual error messages when something goes 
 ```
 python3 ./run.py --debug
 ```
+
+## Using Docker
+
+This project also includes a Dockerfile. Use run it using Docker, use the following commands:
+
+```
+docker build -t escape-room .
+docker run -it escape-room
+```
