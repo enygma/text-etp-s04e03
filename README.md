@@ -14,6 +14,8 @@ Link: [Escape This Podcast (S04E03)](http://www.escapethispodcast.com/e/descent-
 python3 ./run.py
 ```
 
+> **NOTE:** If it's your first time running it, you'll need to install the `adventurelib` and `colored` packages: `pip install adventurelib colored`
+
 ## For debugging
 
 You can also run in debug mode to get actual error messages when something goes wrong:
